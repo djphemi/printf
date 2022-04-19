@@ -1,10 +1,22 @@
-#include "main.h"
+#include <stdarg.h>
+#include <string.h>
+#include <stdlib.h>
+#include <stdio.h>
+
+int _putchar(char c);
+int print_character(va_list arg);
+int print_string(va_list arg);
+void _puts(char *str);
+int _strlen(char *s);
+char *convert_to(char represent[], unsigned int num, int base);
+
+
 /**
- * print_character - prints character
- * @arg: va_list parameter
- * Description: print character
+ * print_character - prints cahracter
+ * @arg: va_list para
  * Return: 1
  */
+
 int print_character(va_list arg)
 {
 	int i;
@@ -14,13 +26,15 @@ int print_character(va_list arg)
 
 	return (1);
 }
+
 /**
- * print_sign - print sign
- * @arg: va_list parameter
- * @base: base 10, 8, 16, 2 etc..
- * Description: print numbers and signed
- * Return: num of characters
+ * print_sign -print sign
+ * @arg: va_list para
+ * @base: base 10, 8, 16 etc
+ * Description: print numbers
+ * Return:numbr of character
  */
+
 int print_sign(va_list arg, int base)
 {
 	int i = 0, cont = 0;
@@ -38,13 +52,15 @@ int print_sign(va_list arg, int base)
 	cont += _strlen(s);
 	return (cont);
 }
+
 /**
- * print_unsign - print_unsign
- * @arg: va_list parameter
- * @base: base 10, 8, 16 etc..
- * Description: print numbers without signed
- * Return: num of characters
+ * print_unsign - print unsign
+ * @arg: va_list para
+ * @base: base 10, 8, 16 etc
+ * Description: print numbers
+ * Return:numbr of character
  */
+
 int print_unsign(va_list arg, int base)
 {
 	int cont = 0;
@@ -57,18 +73,20 @@ int print_unsign(va_list arg, int base)
 	cont = _strlen(s);
 
 	return (cont);
-
 }
+
 /**
- * print_string - print string
- * @arg: va_list parameter
+ * print_string- print string
+ * @arg: va_list para
  * Description: print string
- * Return: num of characters
+ * Return:numbr of character
  */
+
 int print_string(va_list arg)
 {
 	char *s;
 	int cont = 0;
+
 
 	s = va_arg(arg, char *);
 	if (!s)
@@ -78,27 +96,27 @@ int print_string(va_list arg)
 
 		return (_strlen(s));
 	}
+
 	_puts(s);
 	cont = _strlen(s);
 	return (cont);
 }
+
 /**
- * print_base16_upper_lower - print_base16_upper_lower
- * @arg: va_list parameter
- *@representation: pointer parameter
- * Description: This function takes 0123456789ABCDEF or 0123456789abcdef
- * in representation parameter for print hexadecimal format
- * Return: num of characters
+ * print_hex- print base 16
+ * @arg: va_arg para
+ * @represent: pointer parameter
+ * Return: num of character
  */
-int print_base16_upper_lower(va_list arg, char *representation)
+
+int print_hex(va_list arg, char *represent)
 {
 	unsigned int i = 0, cont = 0;
 	char *s;
 
 	i = va_arg(arg, unsigned int);
-	s = convert_to(representation, i, 16);
+	s = convert_to(represent, i, 16);
 	_puts(s);
-	cont = _strlen(s);
+	cont = strlen(s);
 	return (cont);
-
 }
