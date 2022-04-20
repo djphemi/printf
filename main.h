@@ -1,34 +1,26 @@
-#ifndef _HEADER_
-#define _HEADER_
-
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <stdarg.h>
+#ifndef HEADER
+#define HEADER
 
 /**
- * struct placeholder_struct - struct of placeholder
- * @placeholder: type to print
- * @f: function to print
+ * struct ptr_to_function - a struct to aid function selection based on
+ * c value
+ * @c: char to check to return corresponding function
+ * @f: function to return
  */
-
-typedef struct placeholder_struct
+typedef struct ptr_to_function
 {
-	char *placeholder;
-	int (*f)(va_list list);
-} ph_str;
-
-int _putchar(char c);
-void recursion_bin(int a);
-void recursion_int(int a);
-int print_char(va_list list);
-int print_string(va_list list);
-int print_int(va_list list);
-int print_binary(va_list list);
-int check_if_is_specifier(char _type);
-int print_if_not_specifier(char prev_format, char format, int count);
-int print_if_specifier(char format, va_list list);
-int format_checker(const char *format, va_list);
+	char c;
+	int (*f)(int);
+} ptr_f;
+int p_char(char c);
+int p_string(const char *s);
+int p_uint(unsigned int a);
+int p_int_d(int a);
+int check_string(const char *c);
+int check_next_char(const char *c);
+int (*get_func_int(char c))(int);
+int (*get_func_str())(const char *);
+int (*get_func_c())(char);
 int _printf(const char *format, ...);
 
 #endif

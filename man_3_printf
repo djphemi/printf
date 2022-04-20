@@ -1,73 +1,78 @@
-.TH man_3_printf "19 April 2022"Manual for Printf"
-.SH NAME
-.B _printf
-- Formatted output conversion.
-.SH SYNOPSIS
-.B #include "main.h"
+                ALX Student Programmer's Manual
 
+NAME
+      _printf
+      
+SYNOPSIS
 
-.B int _printf(const char *
-.I format
-.B , ...)
-.SH DESCRIPTION
-.B _printf()
-Prints to standard output under the control of a format
-.I format
-string that specifies how subsequent arguments are converted for output. 
-.SH Return value
-On successful return, these functions return the number of characters printed, excluding the null byte used to terminate strings.
+      #include "main.h"
+      
+      int _printf(const char *format_string [%format_specifier], ...);
+      
+DESCRIPTION
+      
+      _printf prints the string pointed to by format_string to standard
+      output, format_string may contain 0 or more optional format_specifiers
+      in which case _printf will print a substitute value from the corres-
+      ponding optional arguments (denoted by ...) passed to it in place of the
+      format_specifier.
+      
+      The type of format_specifier must match the next argument passed to
+      get an expected result else output will promote the argument type to
+      the format_specifier type if possible for example a char promoted to an
+      int, if promotion is not possible the result is undefined.
+      
+  format_string
+      
+      format_string is a string literal or a pointer to a string which may contain
+      0 or more format_specifiers. format_specifiers are preceded with a '%' char-
+      acter which serves as a signal to check if the following character is a
+      valid format_specifier so as to give a directive to _printf to print to
+      stdout a formated string i.e. all the characters in format_string up to the 
+      character  just before the %[format_specifier] and then print the next argument 
+      in a form specified by format_specifier in place of the %[format_specifier].
+      
+  format_specifiers
+  
+      these are characters that specify what to be printed to stdout from the next
+      argument. valid format_specifiers are:
+      
+      d, i
+          
+          an int type argument is expected, they order for the argument to be printed as a
+          a signed decimal.
+          
+      c 
+        
+          a char type argument is expected, it orders for the character passed to be pri-
+          nted to stdout.
+          
+      s 
+      
+          a char * type argument is expected, it orders for the sting pointed to by the 
+          argument to be printed to stdout.
+          
+RETURN VALUE
 
-If an output error is encountered, a negative value is returned.
+      _printf function returns the number of characters printed to stdout.
+      
+EXAMPLE
 
-.SH Format of the format string
-The format string is composed of 0 or more directives (ordinary characters that are not %), which are copied to the output stream. The format string is also composed of conversion specifications, each of which result in fetching zero or more subsequent arguments. Each conversion specification is introduced by the character % and ends with the conversion specifier.
-The argument must correspond properly with the conversion specifier. By default, the arguments are used in the order given.
-
-.SH The conversion specifier
-A character that specifies the type of conversion to be applied. The conversion specifiers and their meanings are:
-.TP
-.BR c
-The int argument is converted to an unsigned char, then the resulting character is written
-.TP
-.B s
-The const char * argument is expected to be a pointer to an array of character type (pointer to a string). Characters from the array are written up to a terminating null byte, but do ot include the terminating null byte.
-.TP
-.B S
-Prints a string. Non printable characters are printed as "\x" followed by their ASCII values in two digit hexadecimal
-.TP
-.B d, i
-The int argument is converted to signed decimal notation.
-.TP
-.B x, X
-The unsigned int argument is converted to unsigned lowercase hexadecimal notation(x), or unsigned uppercase hexadecimal notation(X).
-.TP
-.B u
-The unsigned int argument is converted to unsigned decimal notation
-.TP
-.B o, b
-The unsigned int argument is converted to unsigned octal notation(o) or binary notation(b).
-.TP
-.B p
-Address is printed in hexadecimal.
-.TP
-.B r
-Prints a string in reverse.
-.TP
-.B R
-Prints a string converted to rot13
-.TP
-.B %
-A '%' is written but no argument is converted. The complete version specification is '%%'
-.SH EXAMPLE
-To print the day of the year, where weekday and month are pointers to strings and day and year are integers:
-
-#include "main.h"
-
-_printf("%s, %s %d, %d\\n", weekday, month, day, year);
-.SH SEE ALSO
-.I printf(3)
-.SH BUGS
-No known bugs.
-four unidentified bugs.
-.SH AUTHOR
-Oseni Kareem Oluwaseyi and Abdulazeez Olaitan
+      #include "main.h"
+      #include <stdarg.h>
+      
+      int main()
+      {
+        _printf("%s and %s have been alx's students for %d months.\n", "Diana", "Yusuf", 2);
+        
+        reurn (0);
+      }
+      
+      output:
+      
+            Diana and Yusuf have been alx's students for 2 months.
+            
+Authors: 
+      
+      Diana Wilson and Yusuf Isyaku.
+          

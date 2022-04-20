@@ -1,27 +1,58 @@
 #include "main.h"
+#include <stdarg.h>
 
 /**
- * _printf - a function that acts like the printf()
- *
- * @format : the format to be printed
- *
+ * _printf - prints a formated string
+ * @format: string to print
  * Return: number of characters printed
  */
-
 int _printf(const char *format, ...)
 {
-	va_list list;
-	int length = 0;
+	int count = 0, validator = 0, side_count = 0, total_count = 0, i = 0;
+	va_list ap;
 
-	length = 0;
-
-	if (format == NULL)
+	if (format == 0)
+	{
 		return (-1);
+	}
 
-	va_start(list, format);
+	va_start(ap, format);
+	validator = check_string(format);
 
-	length = format_checker(format, list);
-	va_end(list);
-
-	return (length);
+	if (validator == 0)
+	{
+		total_count = p_string(format);
+		return (total_count);
+	}
+	while (format[i] != 0)
+	{
+		if (format[i] == '%')
+		{
+			if (check_next_char(format + i))
+			{
+				if (format[i + 1] == 's')
+					side_count += p_string(va_arg(ap, const char *));
+				else if (format[i + 1] == 'c')
+					side_count += p_char(va_arg(ap, int));
+				else if (format[i + 1] == 'd' || format[i + 1] == 'i')
+					side_count += get_func_int(format[i + 1])(va_arg(ap, int));
+				i += 2;
+			}
+			else
+			{
+				if (format[i + 1] == '%')
+					i++;
+				count += p_char(format[i]);
+				i++;
+			}
+		}
+		else
+		{
+			count += p_char(format[i]);
+			i++;
+		}
+	}
+	total_count = side_count + count;
+	va_end(ap);
+	return (total_count);
 }
