@@ -1,58 +1,51 @@
 #include "main.h"
-#include <stdarg.h>
 
 /**
- * _printf - prints a formated string
- * @format: string to print
- * Return: number of characters printed
+ * _printf - formatted output conversion and print data.
+ * @format: input string.
+ *
+ * Return: number of chars printed.
  */
 int _printf(const char *format, ...)
 {
-	int count = 0, validator = 0, side_count = 0, total_count = 0, i = 0;
-	va_list ap;
+	unsigned int i = 0, len = 0, ibuf = 0;
+	va_list arguments;
+	int (*function)(va_list, char *, unsigned int);
+	char *buffer;
 
-	if (format == 0)
-	{
+	va_start(arguments, format), buffer = malloc(sizeof(char) * 1024);
+	if (!format || !buffer || (format[i] == '%' && !format[i + 1]))
 		return (-1);
-	}
-
-	va_start(ap, format);
-	validator = check_string(format);
-
-	if (validator == 0)
-	{
-		total_count = p_string(format);
-		return (total_count);
-	}
-	while (format[i] != 0)
+	if (!format[i])
+		return (0);
+	for (i = 0; format && format[i]; i++)
 	{
 		if (format[i] == '%')
 		{
-			if (check_next_char(format + i))
-			{
-				if (format[i + 1] == 's')
-					side_count += p_string(va_arg(ap, const char *));
-				else if (format[i + 1] == 'c')
-					side_count += p_char(va_arg(ap, int));
-				else if (format[i + 1] == 'd' || format[i + 1] == 'i')
-					side_count += get_func_int(format[i + 1])(va_arg(ap, int));
-				i += 2;
+			if (format[i + 1] == '\0')
+			{	print_buf(buffer, ibuf), free(buffer), va_end(arguments);
+				return (-1);
 			}
 			else
-			{
-				if (format[i + 1] == '%')
-					i++;
-				count += p_char(format[i]);
-				i++;
-			}
+			{	function = get_print_func(format, i + 1);
+				if (function == NULL)
+				{
+					if (format[i + 1] == ' ' && !format[i + 2])
+						return (-1);
+					handl_buf(buffer, format[i], ibuf), len++, i--;
+				}
+				else
+				{
+					len += function(arguments, buffer, ibuf);
+					i += ev_print_func(format, i + 1);
+				}
+			} i++;
 		}
 		else
-		{
-			count += p_char(format[i]);
-			i++;
-		}
+			handl_buf(buffer, format[i], ibuf), len++;
+		for (ibuf = len; ibuf > 1024; ibuf -= 1024)
+			;
 	}
-	total_count = side_count + count;
-	va_end(ap);
-	return (total_count);
+	print_buf(buffer, ibuf), free(buffer), va_end(arguments);
+	return (len);
 }
